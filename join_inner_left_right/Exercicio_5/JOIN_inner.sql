@@ -1,0 +1,1 @@
+select * from tb_produto inner join tb_categoria on tb_produto.id_cat = tb_categoria.id_cat

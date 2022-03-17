@@ -1,0 +1,163 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema db_game
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema db_game
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `db_game` DEFAULT CHARACTER SET utf8 ;
+USE `db_game` ;
+
+-- -----------------------------------------------------
+-- Table `db_game`.`tb_classe`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_game`.`tb_classe` (
+  `id_classe` INT NOT NULL AUTO_INCREMENT,
+  `classe` VARCHAR(255) NOT NULL,
+  `sexo` VARCHAR(255) NOT NULL,
+  `faccao` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id_classe`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `db_game`.`tb_personagem`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_game`.`tb_personagem` (
+  `id_personagem` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `atributo_principal` VARCHAR(45) NOT NULL,
+  `lvl` INT NOT NULL,
+  `ataque` DOUBLE NOT NULL,
+  `defesa` DOUBLE NOT NULL,
+  `fk_classe` INT NOT NULL,
+  PRIMARY KEY (`id_personagem`),
+  INDEX `fk_tb_personagem_tb_classe_idx` (`fk_classe` ASC) VISIBLE,
+  CONSTRAINT `fk_tb_personagem_tb_classe`
+    FOREIGN KEY (`fk_classe`)
+    REFERENCES `db_game`.`tb_classe` (`id_classe`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema db_game
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema db_game
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `db_game` DEFAULT CHARACTER SET utf8 ;
+USE `db_game` ;
+
+-- -----------------------------------------------------
+-- Table `db_game`.`tb_classe`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_game`.`tb_classe` (
+  `id_classe` INT NOT NULL AUTO_INCREMENT,
+  `classe` VARCHAR(255) NOT NULL,
+  `sexo` VARCHAR(255) NOT NULL,
+  `faccao` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id_classe`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `db_game`.`tb_personagem`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_game`.`tb_personagem` (
+  `id_personagem` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `atributo_principal` VARCHAR(45) NOT NULL,
+  `lvl` INT NOT NULL,
+  `ataque` DOUBLE NOT NULL,
+  `defesa` DOUBLE NOT NULL,
+  `fk_classe` INT NOT NULL,
+  PRIMARY KEY (`id_personagem`),
+  INDEX `fk_tb_personagem_tb_classe_idx` (`fk_classe` ASC) VISIBLE,
+  CONSTRAINT `fk_tb_personagem_tb_classe`
+    FOREIGN KEY (`fk_classe`)
+    REFERENCES `db_game`.`tb_classe` (`id_classe`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+-- inserindo dados na tabela classe
+INSERT INTO tb_classe (classe, sexo, faccao)
+VALUES
+("Humano","Masculino","Aliança"),
+("Humano","Feminino","Aliança"),
+("Orc","Masculino","Horda"),
+("Shaman","Masculino","Horda"),
+("Bruxa","Feminino","Horda");
+
+SELECT * FROM tb_classe;
+
+-- inserindo dados na tabela personagem 
+INSERT INTO tb_personagem (nome, atributo_principal, lvl, ataque, defesa, fk_classe)
+VALUES
+("Gabriel","Força","15",1200,1600,1),
+("Ulisses","Força","17",2000,2300,3),
+("Ana","Inteligencia","16",1800,1700,5),
+("Kirito","Força","17",2100,2400,3),
+("Asuna","Força","19",2700,3000,3),
+("Ino","Força","20",2100,2400,2),
+("Shikamru","Força","17",2100,2400,1),
+("Amanda","Força","17",2100,2400,2);
+
+SELECT * FROM tb_personagem;
+
+-- SELECT DEFESA ATAQUE MAIOR OU IGUAL A 2000
+SELECT tbp.nome AS `Nome`, tbc.faccao AS `Facção`,tbp.defesa AS `Ataque`
+FROM tb_personagem AS `tbp`
+INNER JOIN tb_classe AS `tbc`
+ON tbp.fk_classe = tbc.id_classe
+WHERE tbp.ataque >= 2000;
+
+-- SELECT DEFESA ENTRE 1000--2000
+SELECT tbp.nome AS `Nome`, tbc.faccao AS `Facção`,tbp.defesa AS `Defesa`
+FROM tb_personagem AS `tbp`
+INNER JOIN tb_classe AS `tbc`
+ON tbp.fk_classe = tbc.id_classe
+WHERE tbp.defesa between 1000 and 2000;
+
+-- SELECT DEFESA ENTRE 1000--2000
+SELECT tbp.nome AS `Nome`
+FROM tb_personagem AS `tbp`
+WHERE tbp.nome LIKE 'C%';
+
+-- SELECT INNER JOIN JUNTANDO DUAS TABELAS 
+SELECT *
+FROM tb_personagem AS `tbp`
+INNER JOIN tb_classe AS `tbc`
+ON tbp.fk_classe = tbc.id_classe
+WHERE tbp.defesa between 1000 and 2000;
+
+-- SELECT TRAZENDO TODAS AS CLASSES HUMANO
+SELECT tbp.nome AS `Nome`, tbp.id_personagem as `ID`, tbc.classe AS `Classe`  
+FROM tb_personagem AS `tbp`
+INNER JOIN tb_classe AS `tbc`
+ON tbp.fk_classe = tbc.id_classe
+WHERE tbc.classe LIKE 'Humano';

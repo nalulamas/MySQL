@@ -1,0 +1,1 @@
+select * from tb_produto where curso like "%J%"

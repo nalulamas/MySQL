@@ -1,0 +1,1 @@
+select * from tb_produto where id_cat = 2
